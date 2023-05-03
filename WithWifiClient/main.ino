@@ -72,7 +72,6 @@ void loop(){
   }
   Serial.println(F("------------------------------------"));
 
-
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
     Serial.println(F("Error reading humidity!"));
@@ -100,7 +99,6 @@ void httpRequest(float field1Data, float field2Data) {
     Serial.println(F("------------------------------------"));
     
     if (!client.connect(server, 80)){
-      
         Serial.println("A conexão com o ThingSpeak Falhou");
         lastConnectionTime = millis();
         client.stop();
@@ -108,11 +106,9 @@ void httpRequest(float field1Data, float field2Data) {
     }
     
     else{
-    
         String data = "field1=" + String(field1Data) + "&field2=" + String(field2Data);
         
         if (client.connect(server, 80)) {
-          
             client.println("POST /update HTTP/1.1");
             client.println("Host: api.thingspeak.com");
             client.println("Connection: close");
