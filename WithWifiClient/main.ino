@@ -93,7 +93,7 @@ void loop(){
   delay(5000);
   }
 
-  void httpRequest(float field1Data, float field2Data) {
+void httpRequest(float field1Data, float field2Data) {
 
     WiFiClient client;
     
