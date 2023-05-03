@@ -58,15 +58,14 @@ void loop(){
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
-  }
-  else {
+  } else {
     temp = event.temperature;
     Serial.print(F("Temperature: "));
     Serial.print(temp);
     Serial.println(F("°C"));
     if(temp > 35 ){
       digitalWrite(CANAL1, HIGH);
-    }else{
+    } else{
       digitalWrite(CANAL1, LOW);  
     }
   }
@@ -75,8 +74,7 @@ void loop(){
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
     Serial.println(F("Error reading humidity!"));
-  }
-  else {
+  } else {
     humidity = event.relative_humidity;
     Serial.print(F("Humidity: "));
     Serial.print(humidity);
@@ -103,11 +101,8 @@ void httpRequest(float field1Data, float field2Data) {
         lastConnectionTime = millis();
         client.stop();
         return;     
-    }
-    
-    else{
+    } else{
         String data = "field1=" + String(field1Data) + "&field2=" + String(field2Data);
-        
         if (client.connect(server, 80)) {
             client.println("POST /update HTTP/1.1");
             client.println("Host: api.thingspeak.com");

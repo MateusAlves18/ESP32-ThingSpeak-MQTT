@@ -1,7 +1,8 @@
 #include <DHT.h>
 #include <DHT_U.h>
 #include <WiFi.h>
-#include "ThingSpeak.h"
+#include "HTTPClient.h"
+
 
 #define DHTPIN 15   
 #define DHTTYPE    DHT22   
@@ -11,11 +12,8 @@
 DHT_Unified dht(DHTPIN, DHTTYPE);
 float temp;
 float humidity;
-
+String url = "https://api.thingspeak.com/update?api_key=SECRET";
 WiFiClient client;
-
-unsigned long myChannelNumber =  1000000;
-const char * myWriteAPIKey = "SECRET";
 
 void setup() {
   Serial.begin(9600);
@@ -49,12 +47,14 @@ void setup() {
   Serial.println("\n Conectado!");
   Serial.println(F("------------------------------------"));
   WiFi.mode(WIFI_STA); 
-  ThingSpeak.begin(client);
   pinMode(CANAL1, OUTPUT);
   pinMode(CANAL2, OUTPUT);
 }
 
 void loop() {
+
+  HTTPClient http;
+
   sensors_event_t event;
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
@@ -66,18 +66,11 @@ void loop() {
     Serial.println(F("°C"));
     if(temp > 35 ){
       digitalWrite(CANAL1, HIGH);
-    }else{
-      digitalWrite(CANAL1, LOW);  
-    }
-    int x = ThingSpeak.writeField(myChannelNumber, 1, temp, myWriteAPIKey);
-    if(x == 200){
-      Serial.println("Channel 1 (temperature) update successful.");
     } else{
-      Serial.println("Problem updating channel 1 (temperature). HTTP error code " + String(x));
-    }           
+      digitalWrite(CANAL1, LOW);  
+    }         
   }
   Serial.println(F("------------------------------------"));
-  delay(15000);
 
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
@@ -92,15 +85,21 @@ void loop() {
     } else{
       digitalWrite(CANAL2, LOW);
     }
-    int y = ThingSpeak.writeField(myChannelNumber, 2, humidity, myWriteAPIKey);
-
-    if(y == 200){
-      Serial.println("Channel 2 (humidity) update successful.");
-    } else{
-      Serial.println("Problem updating channel 2 (humidity). HTTP error code " + String(y));
-    }
   }
   Serial.println(F("------------------------------------"));
-  delay(15000);
+
+  http.begin(url+"&field1="+String(temp)+"&field2="+String(humidity));
+  int httpCode = http.GET();
+  
+  if(httpCode >= 200 && httpCode <= 299){ 
+    Serial.println("Sucesso ao conectar com ThingSpeak.");
+    Serial.println("Status Code:"+ String(httpCode));
+  } else {
+    Serial.println("Problemas ao conectar ThingSpeak.");
+    Serial.println("Status Code:"+ String(httpCode));
+  }
+  
+  Serial.println(F("------------------------------------"));
+  delay(5000);
 
 }
