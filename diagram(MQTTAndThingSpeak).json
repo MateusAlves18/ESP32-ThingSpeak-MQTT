@@ -1,0 +1,50 @@
+{
+    "version": 1,
+    "author": "Mateus Alves",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 24.67, "left": -188.67, "attrs": {} },
+      {
+        "type": "wokwi-dht22",
+        "id": "dht1",
+        "top": 37.97,
+        "left": -12.6,
+        "attrs": { "humidity": "76", "temperature": "64.4" }
+      },
+      {
+        "type": "wokwi-led",
+        "id": "led1",
+        "top": 32.92,
+        "left": -275.6,
+        "attrs": { "color": "red" }
+      },
+      {
+        "type": "wokwi-led",
+        "id": "led2",
+        "top": 34.43,
+        "left": -351.13,
+        "attrs": { "color": "green" }
+      },
+      {
+        "type": "wokwi-led",
+        "id": "led3",
+        "top": 34.8,
+        "left": -428.2,
+        "attrs": { "color": "cyan" }
+      }
+    ],
+    "connections": [
+      [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+      [ "dht1:VCC", "esp:3V3", "red", [ "v0" ] ],
+      [ "esp:GND.1", "dht1:GND", "black", [ "h0" ] ],
+      [ "dht1:SDA", "esp:D15", "green", [ "v5.61", "h-101.73" ] ],
+      [ "led2:C", "esp:GND.2", "black", [ "v0" ] ],
+      [ "led1:A", "esp:D33", "blue", [ "v0" ] ],
+      [ "led2:A", "esp:D25", "green", [ "v0" ] ],
+      [ "led1:C", "esp:GND.2", "black", [ "v0" ] ],
+      [ "led3:A", "esp:D32", "yellow", [ "v0" ] ],
+      [ "led3:C", "esp:GND.2", "black", [ "v0" ] ]
+    ],
+    "dependencies": {}
+  }
