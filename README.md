@@ -2,7 +2,7 @@
 https://wokwi.com/projects/362395233049063425
 
 # ESP32ThingSpeak
-Atividade de integração ESP32 com ThingSpeak pelo Curso Técnico de Desenvolvimentos do Senai.
+Atividade de integração ESP32 com ThingSpeak e Utilização do protocolo MQTT pelo Curso Técnico de Desenvolvimentos do Senai.
 
 # MQTT
 https://www.hivemq.com/demos/websocket-client/ entrar aqui e apertar em conectar
